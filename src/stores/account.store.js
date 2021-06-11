@@ -51,7 +51,7 @@ const login = asyncHandler(async(req, res, next) => {
     }
 
 
-    const userJwt = { id: user.id, email: user.email, username:user.username};
+    const userJwt = { id: user.id, email: user.email};
     let expire = 2592000;
     let token = await jwt.sign(userJwt, process.env.SECRET, {expiresIn: expire });
 
