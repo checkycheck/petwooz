@@ -11,4 +11,5 @@ module.exports = function(app){
 
     app.use('/api/v1/account', require('./account.routes'));
     app.use('/api/v1/post-category',  require('./postCategory.routes'));
+    app.use('/api/v1/post',  require('./post.routes'));
 }

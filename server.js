@@ -34,7 +34,7 @@ mongoose.connect(db.url, {
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to petwooz application." });
+  res.json({ message: "Welcome to petwooz  application." });
 });
 
 //routes
