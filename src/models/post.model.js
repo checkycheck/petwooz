@@ -31,7 +31,7 @@ mongoose.plugin(slug);
         type: mongoose.Schema.ObjectId,
         ref: "user",
       },
-      PostCategory:{
+      postCategory:{
         type: mongoose.Schema.ObjectId,
         ref: "postCategory"
       }

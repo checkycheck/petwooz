@@ -1,5 +1,5 @@
 const authJwt = require('../middleware/auth.jwt');
-const { isAuthenticated, verifyToken } = require('../middleware/auth.jwt');
+const { isAuthenticated } = require('../middleware/auth.jwt');
 
 module.exports = function(app){
     app.use(function(req, res, next) {
@@ -11,5 +11,5 @@ module.exports = function(app){
 
     app.use('/api/v1/account', require('./account.routes'));
     app.use('/api/v1/post-category',  require('./postCategory.routes'));
-    app.use('/api/v1/post',  require('./post.routes'));
+    app.use('/api/v1/post',  [isAuthenticated], require('./post.routes'));
 }

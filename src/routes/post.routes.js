@@ -22,6 +22,7 @@ router
     .get('/get-all', postController.getAllPost)
     .get('/get-single', postController.getSinglePost)
     .delete('/delete', postController.deletePost)
-    .put('/update', postController.editPost);
+    .put('/update', postController.editPost)
+    .get('/get-post-by-category', postController.getPostByCategory);
 
 module.exports = router;

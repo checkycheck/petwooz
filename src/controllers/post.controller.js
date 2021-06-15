@@ -23,10 +23,15 @@ const editPost = asyncHandler(async(req, res, next) =>{
     PostStore.editPost(req, res, next)
 })
 
+const getPostByCategory = asyncHandler(async(req, res, next) =>{
+    PostStore.getPostByCategory(req, res, next)
+})
+
 module.exports = {
     createPost,
     getAllPost,
     getSinglePost,
     deletePost,
-    editPost
+    editPost,
+    getPostByCategory
 }

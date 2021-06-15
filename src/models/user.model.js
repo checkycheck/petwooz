@@ -5,10 +5,6 @@ mongoose.plugin(slug);
 
   var schema = mongoose.Schema(
     {
-      name:{
-        type: String,
-        unique: false
-    },
     fullName: {
         type: String,
 
