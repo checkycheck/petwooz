@@ -53,10 +53,29 @@ const createPost = asyncHandler(async (req, res, next) =>{
             postCategory
         })
         newPostCat.save();
+
+        // let postId = newPostCat._id;
+        // let image = newPostCat.imageURL;
+        // let amount = newPostCat.amount;
+        // let description = newPostCat.description;
+        // let breed = newPostCat.breed;
+        // let item = newPostCat.item;
+        // let servicesType = 
+
+    
         res.status(200).json({
             success:true,
             message:"Post created successfully",
-            data:newPostCat
+            imageURL,
+            amount,
+            description,
+            breed,
+            verificationCenter,
+            item,
+            servicesType,
+            age,
+            user,
+            postCategory
         })
     }catch(error){
         return next(error)
@@ -65,12 +84,38 @@ const createPost = asyncHandler(async (req, res, next) =>{
 
 const getAllPost = asyncHandler(async (req, res, next) =>{
     try{
-        let postCat = await PostModel.find()
-                        .populate("user", ["fullName", "address", ])
+        let post = await PostModel.find()
+                        .populate("user", ["fullName", "address", ]);
+        console.log(post)
+        let postId = post._id;
+        let image = post.imageURL;
+        let description = post.description;
+        let breed = post.breed;
+        let item = post.item;
+        let servicesType = post.servicesType;
+        let age = post.age;
+        // let userId = post.user.id;
+        // let userFullName = post.user.fullName;
+        // let userAddress = post.user.address;
+        let postCategory = post.postCategory;
+        let createdDate = post.createdAt;
+        console.log(image)
         res.status(200).json({
-            success:true,
-            message:"Post fetch successfully",
-            data:postCat
+            // success:true,
+            // message:"Post fetch successfully",
+            post,
+            postId:postId,
+            image:image,
+            description:description,
+            breed:breed,
+            item:item,
+            servicesType:servicesType,
+            age:age,
+            // userId,
+            // userFullName,
+            // userAddress,
+            postCategory:postCategory,
+            createdDate:createdDate
         })
     }catch(error){
         return next(new ErrorResponse("Unable to fetch post", 400));

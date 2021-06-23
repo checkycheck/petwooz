@@ -54,15 +54,24 @@ const login = asyncHandler(async(req, res, next) => {
     const userJwt = { id: user.id, email: user.email};
     let expire = 2592000;
     let token = await jwt.sign(userJwt, process.env.SECRET, {expiresIn: expire });
+    let userId = user.id;
+    let phone = user.phone;
+    let email = user.email;
+    let fullName = user.fullName;
+    let address = user.address;
+    let state = user.state;
 
     return res.status(200).send({
         success: true,
         message: "login successful",
-        data: user,
-        authorization: {
-            token,
-            expiresIn: expire
-        }
+        userId,
+        phone,
+        email,
+        fullName,
+        address,
+        state,
+        token,
+        expiresIn: expire
     });
 })
 
