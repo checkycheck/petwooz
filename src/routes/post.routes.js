@@ -23,6 +23,7 @@ router
     .get('/get-single', postController.getSinglePost)
     .delete('/delete', postController.deletePost)
     .put('/update', postController.editPost)
-    .get('/get-post-by-category', postController.getPostByCategory);
+    .get('/get-post-by-category', postController.getPostByCategory)
+    .get('/get-user-post', postController.getPostByUser);
 
 module.exports = router;

@@ -5,27 +5,31 @@ const PostStore = require('../stores/post.store');
 
 const createPost = asyncHandler(async(req, res, next) =>{
     PostStore.createPost(req, res, next)
-})
+});
 
 const getAllPost = asyncHandler(async(req, res, next) =>{
     PostStore.getAllPost(req, res, next)
-})
+});
 
 const getSinglePost = asyncHandler(async(req, res, next) =>{
     PostStore.getSinglePost(req, res, next)
-})
+});
 
 const deletePost = asyncHandler(async(req, res, next) =>{
     PostStore.deletePost(req, res, next)
-})
+});
 
 const editPost = asyncHandler(async(req, res, next) =>{
     PostStore.editPost(req, res, next)
-})
+});
 
 const getPostByCategory = asyncHandler(async(req, res, next) =>{
     PostStore.getPostByCategory(req, res, next)
-})
+});
+
+const getPostByUser = asyncHandler(async(req, res, next) =>{
+    PostStore.getPostByUser(req, res, next)
+});
 
 module.exports = {
     createPost,
@@ -33,5 +37,6 @@ module.exports = {
     getSinglePost,
     deletePost,
     editPost,
-    getPostByCategory
+    getPostByCategory,
+    getPostByUser
 }

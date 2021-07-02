@@ -6,11 +6,6 @@ const { upload } = require('./media.store');
 const cloudinary = require("cloudinary");
 const path = require('path');
 
-
-
-
-
-
 cloudinary.config({
     cloud_name: 'jubel',
     api_key: '394513677318352',
@@ -29,6 +24,14 @@ const createPost = asyncHandler(async (req, res, next) =>{
             age,
             postCategory
         }= req.body;
+        let cat = await PostCategory.findOne({name:postCategory});
+        if(!cat){
+            return res.status(404).json({
+                success:false,
+                message:"Sorry there is no post category with that name"
+            })
+        }
+        let catId = cat._id;
         let user = req.user.id;
         let cloudIMG = await cloudinary.v2.uploader.upload(req.file.path,function(err,res){
             if (err) {
@@ -40,7 +43,7 @@ const createPost = asyncHandler(async (req, res, next) =>{
                 return image
             });
         let imageURL = cloudIMG.secure_url;
-        let newPostCat = new PostModel({
+        let newPost = new PostModel({
             imageURL,
             amount,
             description,
@@ -50,32 +53,13 @@ const createPost = asyncHandler(async (req, res, next) =>{
             servicesType,
             age,
             user,
-            postCategory
+            postCategory:catId
         })
-        newPostCat.save();
-
-        // let postId = newPostCat._id;
-        // let image = newPostCat.imageURL;
-        // let amount = newPostCat.amount;
-        // let description = newPostCat.description;
-        // let breed = newPostCat.breed;
-        // let item = newPostCat.item;
-        // let servicesType = 
-
-    
+        newPost.save();
         res.status(200).json({
             success:true,
             message:"Post created successfully",
-            imageURL,
-            amount,
-            description,
-            breed,
-            verificationCenter,
-            item,
-            servicesType,
-            age,
-            user,
-            postCategory
+            data:newPost
         })
     }catch(error){
         return next(error)
@@ -85,39 +69,16 @@ const createPost = asyncHandler(async (req, res, next) =>{
 const getAllPost = asyncHandler(async (req, res, next) =>{
     try{
         let post = await PostModel.find()
-                        .populate("user", ["fullName", "address", ]);
-        console.log(post)
-        let postId = post._id;
-        let image = post.imageURL;
-        let description = post.description;
-        let breed = post.breed;
-        let item = post.item;
-        let servicesType = post.servicesType;
-        let age = post.age;
-        // let userId = post.user.id;
-        // let userFullName = post.user.fullName;
-        // let userAddress = post.user.address;
-        let postCategory = post.postCategory;
-        let createdDate = post.createdAt;
-        console.log(image)
+        .populate("user",["fullName", "address"])
+        .populate("postCategory", "name")
+        .sort({createdAt: -1});
         res.status(200).json({
-            // success:true,
-            // message:"Post fetch successfully",
-            post,
-            postId:postId,
-            image:image,
-            description:description,
-            breed:breed,
-            item:item,
-            servicesType:servicesType,
-            age:age,
-            // userId,
-            // userFullName,
-            // userAddress,
-            postCategory:postCategory,
-            createdDate:createdDate
+            success: true,
+            message:"Post fetch successfully",
+            data:post
         })
     }catch(error){
+        console.log("this is error", error)
         return next(new ErrorResponse("Unable to fetch post", 400));
     }
 })
@@ -125,7 +86,9 @@ const getAllPost = asyncHandler(async (req, res, next) =>{
 const getSinglePost = asyncHandler(async(req, res, next) =>{
     try{
         let postId = req.query.postId;
-        let postCat = await PostModel.findById(postId);
+        let postCat = await PostModel.findById(postId)
+        .populate("user",["fullName", "address"])
+        .populate("postCategory", "name");
         res.status(200).json({
             success:true,
             message:"Post fetch successfully",
@@ -165,9 +128,6 @@ const editPost = asyncHandler(async(req, res, next) =>{
          )
 
 
-
-
-
         res.status(200).json({
             success: true,
             message:"Post updated successfully",
@@ -180,13 +140,32 @@ const editPost = asyncHandler(async(req, res, next) =>{
 
 const getPostByCategory = asyncHandler(async(req, res, next) =>{
     try{
-        let catId = req.query.catId;
-        console.log("this is post",catId)
-        let post  = await PostModel.find({postCategory:catId});
-        console.log("this is post",post)
+        let cat = await PostCategory.findOne({name:req.query.cat});
+        let catId = cat._id;
+        let post  = await PostModel.find({postCategory:catId})
+        .populate("user",["fullName", "address"])
+        .populate("postCategory", "name")
+        .sort({createdAt: -1});
         res.status(200).json({
             success:true,
             message:"post fetch successfully",
+            data:post
+        })
+    }catch(error){
+        return next(new ErrorResponse("Unable to get post", 400));
+    }
+})
+
+const getPostByUser = asyncHandler(async(req, res, next) =>{
+    try{
+        let user = req.query.userId;
+        let post  = await PostModel.find({user:user})
+        .populate("user",["fullName", "address"])
+        .populate("postCategory", "name")
+        .sort({createdAt: -1});
+        res.status(200).json({
+            success:true,
+            message:"User post fetch successfully",
             data:post
         })
     }catch(error){
@@ -200,5 +179,6 @@ module.exports = {
     getSinglePost,
     deletePost,
     editPost,
-    getPostByCategory
+    getPostByCategory,
+    getPostByUser
 }

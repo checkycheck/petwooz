@@ -53,7 +53,19 @@ mongoose.plugin(slug);
     resetPasswordExpires: {
         type: Date,
         required: false,
-    }
+    },
+    notificationCounter: {
+        type: Number,
+        default: 0,
+      },
+    deviceToken: {
+        type: String,
+        default: null,
+    },
+    deviceRegistered: {
+        type: Boolean,
+        default: false,
+    },
     },
     { timestamps: true }
   );
