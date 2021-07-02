@@ -69,7 +69,7 @@ const createPost = asyncHandler(async (req, res, next) =>{
 const getAllPost = asyncHandler(async (req, res, next) =>{
     try{
         let post = await PostModel.find()
-        .populate("user",["fullName", "address"])
+        .populate("user",["fullName", "address", "phone"])
         .populate("postCategory", "name")
         .sort({createdAt: -1});
         res.status(200).json({
@@ -87,7 +87,7 @@ const getSinglePost = asyncHandler(async(req, res, next) =>{
     try{
         let postId = req.query.postId;
         let postCat = await PostModel.findById(postId)
-        .populate("user",["fullName", "address"])
+        .populate("user",["fullName", "address", "phone"])
         .populate("postCategory", "name");
         res.status(200).json({
             success:true,
@@ -143,7 +143,7 @@ const getPostByCategory = asyncHandler(async(req, res, next) =>{
         let cat = await PostCategory.findOne({name:req.query.cat});
         let catId = cat._id;
         let post  = await PostModel.find({postCategory:catId})
-        .populate("user",["fullName", "address"])
+        .populate("user",["fullName", "address", "phone"])
         .populate("postCategory", "name")
         .sort({createdAt: -1});
         res.status(200).json({
@@ -160,7 +160,7 @@ const getPostByUser = asyncHandler(async(req, res, next) =>{
     try{
         let user = req.query.userId;
         let post  = await PostModel.find({user:user})
-        .populate("user",["fullName", "address"])
+        .populate("user",["fullName", "address", "phone"])
         .populate("postCategory", "name")
         .sort({createdAt: -1});
         res.status(200).json({
