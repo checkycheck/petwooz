@@ -23,7 +23,7 @@ const createPost = asyncHandler(async (req, res, next) =>{
             servicesType,
             age,
             postCategory,
-            
+
         }= req.body;
         let cat = await PostCategory.findOne({name:postCategory});
         if(!cat){
@@ -76,7 +76,7 @@ const getAllPost = asyncHandler(async (req, res, next) =>{
         res.status(200).json({
             success: true,
             message:"Post fetch successfully",
-            data:post
+            post
         })
     }catch(error){
         console.log("this is error", error)
@@ -87,13 +87,13 @@ const getAllPost = asyncHandler(async (req, res, next) =>{
 const getSinglePost = asyncHandler(async(req, res, next) =>{
     try{
         let postId = req.query.postId;
-        let postCat = await PostModel.findById(postId)
+        let post = await PostModel.findById(postId)
         .populate("user",["fullName", "address", "phone"])
         .populate("postCategory", "name");
         res.status(200).json({
             success:true,
             message:"Post fetch successfully",
-            data: postCat
+            post
         })
     }catch(error){
         return next(new ErrorResponse("Unable to fetch post", 400));
@@ -150,7 +150,7 @@ const getPostByCategory = asyncHandler(async(req, res, next) =>{
         res.status(200).json({
             success:true,
             message:"post fetch successfully",
-            data:post
+            post
         })
     }catch(error){
         return next(new ErrorResponse("Unable to get post", 400));
@@ -167,7 +167,7 @@ const getPostByUser = asyncHandler(async(req, res, next) =>{
         res.status(200).json({
             success:true,
             message:"User post fetch successfully",
-            data:post
+            post
         })
     }catch(error){
         return next(new ErrorResponse("Unable to get post", 400));
