@@ -22,7 +22,8 @@ const createPost = asyncHandler(async (req, res, next) =>{
             item,
             servicesType,
             age,
-            postCategory
+            postCategory,
+            
         }= req.body;
         let cat = await PostCategory.findOne({name:postCategory});
         if(!cat){
