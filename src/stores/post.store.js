@@ -34,7 +34,7 @@ const createPost = asyncHandler(async (req, res, next) =>{
         }
         let catId = cat._id;
         if(req.file == undefined){
-            var imageURL = "";
+            var imageURL = "https://res.cloudinary.com/jubel/image/upload/v1625350220/images_12_y5uyh7.jpg";
         }else{
             let cloudIMG = await cloudinary.v2.uploader.upload(req.file.path,function(err,res){
                 if (err) {
