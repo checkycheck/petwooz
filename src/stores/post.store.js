@@ -23,7 +23,7 @@ const createPost = asyncHandler(async (req, res, next) =>{
             servicesType,
             age,
             postCategory,
-
+            user
         }= req.body;
         let cat = await PostCategory.findOne({name:postCategory});
         if(!cat){
@@ -33,7 +33,6 @@ const createPost = asyncHandler(async (req, res, next) =>{
             })
         }
         let catId = cat._id;
-        let user = req.user.id;
         let cloudIMG = await cloudinary.v2.uploader.upload(req.file.path,function(err,res){
             if (err) {
                 console.log('this is the error',err)
