@@ -33,16 +33,23 @@ const createPost = asyncHandler(async (req, res, next) =>{
             })
         }
         let catId = cat._id;
-        let cloudIMG = await cloudinary.v2.uploader.upload(req.file.path,function(err,res){
-            if (err) {
-                console.log('this is the error',err)
-                return next({})
-            } else {
-                console.log('this is the secure_url',res.secure_url)}
+        if(req.file == undefined){
+            var imageURL = "";
+        }else{
+            let cloudIMG = await cloudinary.v2.uploader.upload(req.file.path,function(err,res){
+                if (err) {
+                    console.log('this is the error',err)
+                    return next({})
+                } else {
+                    console.log('this is the secure_url',res.secure_url)
+                }
                 let image = res.secure_url;
                 return image
             });
-        let imageURL = cloudIMG.secure_url;
+            var imageURL = cloudIMG.secure_url;
+        }
+        
+        
         let newPost = new PostModel({
             imageURL,
             amount,
